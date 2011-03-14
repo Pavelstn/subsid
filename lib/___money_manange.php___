@@ -1,0 +1,233 @@
+<?php
+//////Этот файл создан "в помощ" файлу function_define.php
+////// в нем будут записаны функции для обработки и подсчета денег и других
+////// критических по надежности частей////////////////////////////////////
+function calk_month($start_date, $stop_date)
+            {
+              //2005-06-01
+              //2005-11-30
+
+              $full_year= get_year($stop_date)- get_year($start_date);
+              $full_month= get_month($start_date)- get_month($stop_date)+1;
+              //echo $full_month;
+              $time[0]= $full_year;
+              $time[1]= $full_month;
+              return $time;
+            }
+
+
+////////////////////////////////////////////////////////////////////////////////
+function count_people_money($id_people )
+         {
+           $rub= 0;
+           $kop= 0;
+           $month= 0;
+           $query= "SELECT * from dohod
+                    WHERE id_people= '$id_people'
+                    ";
+           connect_to_my_db();
+                     $result= mysql_query($query) or die (mysql_error());
+           while($row= mysql_fetch_array($result))
+               {
+                  $rub= $rub+ $row["value_money"];
+                  $kop= $kop+ $row["value_money2"];
+                  
+                 $ckl= calk_month($row["to_date"], $row["at_date"]);
+                 $month= $month+ $ckl[1];
+                 //echo $ckl[1];
+               }
+           $only_kop= $kop % 100;
+           $add_rub_= $kop- $only_kop;
+           
+           $add_rub= $add_rub_/100;
+
+           $deng[0]= $rub+ $add_rub; //рубли
+           $deng[1]= $only_kop;      //копейки
+           $deng[2]= $month;         //по идее должны считаться месяцы
+           
+           
+          return $deng;
+         }
+         
+         
+
+/////////////////////////////////////////////////////////////////////////////////
+// function insert_dohod ($session_id, $id_people, $current_count_people)
+//          {
+//            $query= "SELECT * FROM tmp_dohod
+//                     WHERE session_id='$session_id'
+//                     AND   id_people= '$id_people'";
+//            connect_to_my_db();
+//            $result= mysql_query($query) or die (mysql_error());
+//            while($row= mysql_fetch_array($result))
+//                 {
+//                   $id_people= $row["id_people"];
+//                   //$count= $row["count"];
+//                   $id_dohod= $row["id_dohod"];
+//                   $at_day= $row["at_day"];
+//                   $at_month= $row["at_month"];
+//                   $at_year= $row["at_year"];
+//                   $to_day= $row["to_day"];
+//                   $to_month= $row["to_month"];
+//                   $to_year= $row["to_year"];
+//                   $value_money= $row["value_money"];
+//                   $value_money2= $row["value_money2"];
+//
+ //                  $at_date= $at_year."-".$at_month."-".$at_day;
+//                   $to_date= $to_year."-".$to_month."-".$to_day;
+//
+//                   $count= ordinary_count_row ( "dohod", "count");
+//                   $count= $count+1;
+//                   //echo "Запись доходов<br>";
+ //                  $a_query= "INSERT INTO dohod
+//                                                (
+//                                                 id_people,
+//                                                 count,
+//                                                 id_dohod,
+//                                                 at_date,
+//                                                 to_date,
+//                                                 value_money,
+//                                                 value_money2
+//                                                )
+//                                         VALUES
+//                                              (
+//                                                '$current_count_people',
+//                                                '$count',
+//                                                '$id_dohod',
+//                                                '$at_date',
+//                                                '$to_date',
+//                                                '$value_money',
+//                                                '$value_money2'
+//                                              )";
+//                       $a_result= mysql_query($a_query) or die (mysql_error());
+//                  }
+//          }
+//
+/////////////////////////////////////////////////////////////////////////////////
+// function insert_udostover ($session_id, $id_people,$current_count_people)
+///          {
+//            $query= "SELECT * FROM tmp_udostover
+//                     WHERE session_id='$session_id'
+//                     AND   id_people= '$id_people'";
+//            connect_to_my_db();
+//            $result= mysql_query($query) or die (mysql_error());
+//            while($row= mysql_fetch_array($result))
+//                 {
+//                   $id_people= $row["id_people"];
+ //                  $id_udostover= $row["id_udostover"];
+//                   $serial= $row["serial"];
+//                   $nomer= $row["nomer"];
+//                   $who= $row["who"];
+//                   $date_day= $row["date_day"];
+//                   $date_month= $row["date_month"];
+//                   $date_year= $row["date_year"];
+//
+//                   $date= $date_year."-".$date_month."-".$date_day;
+//
+//                   $count= ordinary_count_row ( "udostover", "count");
+//                   $count= $count+1;
+//                   echo "удостоверения<br>";
+//                   $a_query= "INSERT INTO udostover
+//                                                (
+//                                                 id_people,
+//                                                 count,
+//                                                 id_udostover,
+//                                                 serial,
+//                                                 nomer,
+//                                                 who,
+//                                                 date
+//                                                )
+//                                         VALUES
+//                                              (
+//                                                '$current_count_people',
+//                                                '$count',
+//                                                '$id_udostover',
+//                                                '$serial',
+ //                                               '$nomer',
+//                                                '$who',
+//                                                '$date'
+//                                              )";
+//                       $a_result= mysql_query($a_query) or die (mysql_error());
+//                  }
+//          }
+/////////////////////////////////////////////////////////////////////////////////
+//function insert_people($current_count_people, $current_count_house, $bank, $familia, $imya, $otchestvo, $date, $sex)
+//         {
+//           $a_query= "INSERT INTO people
+//                                     (
+//                                       id_home,
+//                                       bank,
+//                                       familia,
+//                                       imya,
+//                                       otchestvo,
+//                                       date,
+//                                       sex
+//                                     )
+//                             VALUES
+//                                     (
+//                                      '$current_count_house',
+//                                      '$bank',
+//                                      '$familia',
+//                                      '$imya',
+//                                      '$otchestvo',
+//                                      '$date',
+//                                      '$sex'
+//                                     )";
+//           connect_to_my_db();
+////           $a_result= mysql_query($a_query) or die (mysql_error());
+//           //////////////////////////////////////////////////////////////////////////////////
+//            $query= "SELECT max(id_people) FROM people";
+//            connect_to_my_db();
+//            $result= mysql_query($query) or die (mysql_error());
+//            while($row= mysql_fetch_array($result))
+//                {
+//                    $id_people= (int)$row["max(id_people)"];
+//                }
+//           return $id_people;
+//         }
+ //
+/////////////////////////////////////////////////////////////////////////////////
+//function insert_uslug($id_home, $id_uslug, $value_uslug)
+//{
+//  $query= "INSERT INTO uslug (
+//
+//                               id_home,
+//                               id_uslug,
+//                               value_uslug
+//                              )
+//                      VALUES (
+////                              '$id_home',
+//                              '$id_uslug',
+//                              '$value_uslug'
+//                              )";
+//           connect_to_my_db();
+//           $a_result= mysql_query($query) or die (mysql_error());
+//}
+//
+//function insert_udobstv($id_home, $id_udobstv)
+//{
+//  $query= "INSERT INTO udobstv (
+//                                 id_home,
+//                                 id_udobstv
+//                                )
+//                         VALUES (
+//                                  '$id_home',
+//                                  '$id_udobstv'
+//                                 )";
+//           connect_to_my_db();
+//           $a_result= mysql_query($query) or die (mysql_error());
+//}
+
+
+function merge_rub_and_kop($rub, $kop)
+	{
+	  $only_kop= $kop % 100;
+	  $add_rub_= $kop- $only_kop;
+	  $add_rub= $add_rub_/100;
+	  $rub= $rub+ $add_rub;
+	  $only_kop= $only_kop/100;
+	  $deng= $rub+$only_kop;
+	  return $deng;
+	}
+
+    ?>

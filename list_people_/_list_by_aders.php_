@@ -1,0 +1,81 @@
+<?
+if(!isset($session_id))
+   {
+    session_start();
+   }
+$session_id= session_id();
+
+function decode_sost_vipl($code)
+            {
+                $vid_vipl[1]=  "Выплачивать";
+                $vid_vipl[2]=  "Приостановлено";
+                $vid_vipl[3]=  "Не выплачивать";
+                echo "<td >";
+                if($code>=1 and $code<=3) { echo $vid_vipl[$code];}
+                else {echo "<font color= \"red\">не определено </font>";}
+                echo "</td>";
+                
+            }
+
+
+//$query = getenv("QUERY_STRING");
+//////////////////////////////////////////////////////////////////////////////
+function get_bank($id_home)
+    {
+      $query= "SELECT bank, sost_vipl FROM zayavki WHERE id_home= '$id_home'";
+      connect_to_my_db();
+      $result= mysql_query($query) or die (mysql_error());
+      $res="";
+      $vpl= "";
+      while($row= mysql_fetch_array($result))
+        {
+          $res= $row["bank"];
+          $vpl= $row["sost_vipl"];
+        }
+        echo "<td >";
+        if($res=="") { echo "<font color= \"red\">Нет данных </font>";}
+        echo $res;
+        echo "</td >";
+        decode_sost_vipl($vpl);
+        
+    }
+
+
+function list_by_aders()
+{
+
+include_once("../lib/function_define.php");
+  
+if(!isset($_SESSION['_query'])) { die ("системная ошибка"); }
+
+$query= $_SESSION['_query'];
+  connect_to_my_db();
+  
+  $result= mysql_query($query) or die (mysql_error());
+//  echo $query;
+  echo "<table border=\"1\" width=\"100%\" id=\"table1\">\n";
+  
+echo "  	<tr>";
+echo "		<td bgcolor=\"#C0C0C0\"><center>Адрес</center></td>";
+echo "		<td bgcolor=\"#C0C0C0\"><center>Номер базового счета</center></td>";
+echo "		<td bgcolor=\"#C0C0C0\">Состояние<br>выплаты</td>";
+echo "		<td bgcolor=\"#C0C0C0\"></td>";
+echo "	</tr>";
+  
+  $servername= $_SESSION['$servername'];
+   while($row= mysql_fetch_array($result))
+      { $id_h= $row["id_home"];
+         echo "<tr>\n";
+         echo	"<td>",convert_kladr_to_adres($row["code_street"], $row["nomer_doma"], $row["nomer_korpusa"], $row["nomer_kvartiri"]),"</td>\n";
+         //echo "<td width=\"30%\" >";
+                get_bank($id_h);
+         //echo "</td>";
+         echo "<td width=\"10%\"> <a href= \"$servername/new_house/index.php?".$id_h."\"TARGET=\"_top\"\">Подробнее</a></td>\n";
+         echo "</tr>\n";
+       
+      }
+   echo "</table>";
+}
+
+list_by_aders();
+?>

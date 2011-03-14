@@ -1,0 +1,41 @@
+<?
+if(!isset($session_id))
+   {
+    session_start();
+   }
+$session_id= session_id();
+
+
+
+
+function list_by_name()
+{
+
+  include_once("../lib/function_define.php");
+  
+if(!isset($_SESSION['_query']))  { die ("системная ошибка"); }
+
+$query= $_SESSION['_query'];
+  connect_to_my_db();
+  
+  $result= mysql_query($query) or die (mysql_error());
+echo "<table border=\"1\" width=\"100%\" id=\"table1\">\n";
+echo "	<tr>";
+echo "		<td bgcolor=\"#C0C0C0\" width=\"10%\" >Базовый счет</td>";
+echo "		<td bgcolor=\"#C0C0C0\" width=\"70%\" > <center>Ф.И.О.</center></td>";
+echo "		<td bgcolor=\"#C0C0C0\"> &nbsp;</td>";
+echo "	</tr>";
+  $servername= $_SESSION['$servername'];
+  $_SESSION['return_point']= "$servername/list_people/index.php";
+ while($row= mysql_fetch_array($result))
+      {
+        echo "	<tr>";
+        echo "		<td >".$row["id_people"]."</td>";
+        echo "		<td >".$row["familia"]."  ".$row["imya"]."  ".$row["otchestvo"]."</td>";
+        echo "		<td ><a href= \"$servername/new_people/index.php?".$row["id_people"]."\"TARGET=\"_top\"\">Подробнее</a></td>";
+        echo "	</tr>";
+    }
+}
+
+  list_by_name();
+?>

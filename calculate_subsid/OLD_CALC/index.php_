@@ -1,0 +1,43 @@
+<?php
+ include_once("../classes/submit.php");
+// include_once("../classes/select_uslug.php");
+// 
+ include_once("../lib/navigate.php");
+// 
+// include_once("class_calc_people.php");
+// include_once("class_calc_lgot.php");
+// include_once("calculate_koef_lgot.php");
+// include_once("calc_full_tarif.php");
+// include_once("calc_all_uslug.php");
+// 
+// include_once("get_setting.php");
+// 
+// include_once("class_calc_dohod.php");
+// include_once("class_calc_prog_min.php");
+
+
+include_once("./lib/func_calc_subsid.php");
+
+echo "<body bgcolor=\"#FFFFD4\">";
+
+//администрирование//
+$back= new submit("bck","^ Назад"); 
+	if($back->get_onclick()) link("../system_menu.php");
+	
+
+
+$calk= new submit("_calk_","Подсчитать"); 
+
+
+
+echo "<form method=\"POST\"  action=\"index.php\">\n";
+ $back->to_html();
+
+
+echo "<hr>\n";
+echo "расчет от модуля \n";
+echo func_calc_subsid(5, "2006-03-01", "2006-03-31");
+echo " рублей.<br>\n";
+
+echo "</form>\n";
+?>

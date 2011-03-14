@@ -1,0 +1,282 @@
+<?
+function data_add_new_people($id_home, $familia, $imya, $otchestvo, $date, $sex, $vid_doc, $serial, $nomer, $who, $data_vid, $bank_schet,$bank_filial)
+            {
+              $query= " INSERT INTO people (
+                                    id_home,
+                                    familia,
+                                    imya,
+                                    otchestvo,
+                                    date,
+                                    sex,
+                                    vid_doc,
+                                    serial,
+                                    nomer,
+                                    who,
+                                    data_vid,
+                                    bank_schet,
+                                    bank_filial
+                                    
+                                  )
+                          VALUES (
+                                  '$id_home',
+                                  '$familia',
+                                  '$imya',
+                                  '$otchestvo',
+                                  '$date',
+                                  '$sex',
+                                  '$vid_doc',
+                                  '$serial',
+                                  '$nomer',
+                                  '$who',
+                                  '$data_vid',
+                                  '$bank_schet',
+                                  '$bank_filial'
+                                  
+                                 )";
+              connect_to_my_db();
+              $result= mysql_query($query) or die (mysql_error());
+              //////////////////////////////////////
+            $query= "SELECT max(id_people) FROM people";
+            connect_to_my_db();
+            $result= mysql_query($query) or die (mysql_error());
+            while($row= mysql_fetch_array($result))
+                {
+                    $id_people= (int)$row["max(id_people)"];
+                }
+           return $id_people;
+            }
+/////////////////////////////////////////////////////////////////////////////////////////////////////
+function data_add_new_house ($code_street, $nomer_doma, $nomer_korpusa, $nomer_kvartiri)
+            {
+              $query= " INSERT INTO house (
+                                            code_street,
+                                            nomer_doma,
+                                            nomer_korpusa,
+                                            nomer_kvartiri
+                                           )
+                                    VALUES (
+                                            '$code_street',
+                                            '$nomer_doma',
+                                            '$nomer_korpusa',
+                                            '$nomer_kvartiri'
+                                           )";
+                connect_to_my_db();
+                $result= mysql_query($query) or die (mysql_error());
+              ///////////////////////////////////////////////////////
+                $query= "SELECT max(id_home) FROM house";
+                connect_to_my_db();
+                $result= mysql_query($query) or die (mysql_error());
+                while($row= mysql_fetch_array($result))
+                    {
+                        $id_home= (int)$row["max(id_home)"];
+                    }
+                return $id_home;
+            }
+////////////////////////////////////////////////////////////////////////////////////////////////////
+function data_add_new_house_env($id_home, $vid_sobstv, $bank, $obsh_ploshad, $otapl_ploshad, $kolvo_komnat, $vid_otopl, $vladelec)
+            {
+              $query= " INSERT INTO house_env (
+                                            id_home,
+                                            vid_sobstv,
+                                            bank,
+                                            obsh_ploshad,
+                                            otapl_ploshad,
+                                            kolvo_komnat,
+                                            vid_otopl,
+                                            vladelec
+                                           )
+                                  VALUES (
+                                           '$id_home',
+                                           '$vid_sobstv',
+                                           '$bank',
+                                           '$obsh_ploshad',
+                                           '$otapl_ploshad',
+                                           '$kolvo_komnat',
+                                           '$vid_otopl',
+                                           '$vladelec'
+                                          )";
+                connect_to_my_db();
+                $result= mysql_query($query) or die (mysql_error());
+            }
+/////////////////////////////////////////////////////////////////////////////////////////////////////
+function data_add_new_udobstv($id_home, $id_udobstv)
+            {
+              $query= " INSERT INTO udobstv (
+                                                id_home,
+                                                id_udobstv
+                                             )
+                                     VALUES (
+                                              '$id_home',
+                                              '$id_udobstv'
+                                            )";
+                connect_to_my_db();
+                $result= mysql_query($query) or die (mysql_error());
+            }
+///////////////////////////////////////////////////////////////////////////////////////////////////
+function data_add_new_uslug($id_home, $id_uslug, $value_uslug)
+            {
+              $query= " INSERT INTO uslug (
+                                            id_home,
+                                            id_uslug,
+                                            value_uslug
+                                           )
+                                   VALUES (
+                                            '$id_home',
+                                            '$id_uslug',
+                                            '$value_uslug'
+                                           )";
+                connect_to_my_db();
+                $result= mysql_query($query) or die (mysql_error());
+             }
+//////////////////////////////////////////////////////////////////////////////////////////////////
+function data_add_new_zayavki($id_home, $date, $at_date, $to_date, $z_bank, $sost_vipl)
+            {
+              $query= " INSERT INTO zayavki (
+                                            id_home,
+                                            date,
+                                            at_date,
+                                            to_date,
+                                            bank,
+                                            sost_vipl
+                                          )
+                                   VALUES (
+                                            '$id_home',
+                                            '$date',
+                                            '$at_date',
+                                            '$to_date',
+                                            '$z_bank',
+                                            '$sost_vipl'
+                                            )";
+                connect_to_my_db();
+                $result= mysql_query($query) or die (mysql_error());
+            }
+//////////////////////////////////////////////////////////////////////////////////////////////////
+//////////////////////////////////////////////////////////////////////////////////////////////////
+function data_add_new_udostover($id_people, $id_udostover, $serial, $nomer, $who, $date)
+            {
+              $query= " INSERT INTO udostover (
+                                                id_people,
+                                                id_udostover,
+                                                serial,
+                                                nomer,
+                                                who,
+                                                date
+                                              )
+                                       VALUES (
+                                                '$id_people',
+                                                '$id_udostover',
+                                                '$serial',
+                                                '$nomer',
+                                                '$who',
+                                                '$date'
+                                                )";
+                connect_to_my_db();
+                $result= mysql_query($query) or die (mysql_error());
+            }
+/////////////////////////////////////////////////////////////////////////////////////
+//////////////////////////////////////////////////////////////////////////////////////////////
+function data_add_new_dohod($id_people, $id_dohod, $at_date, $to_date, $value_money, $value_money2)
+            {
+              $query= "INSERT INTO dohod (
+                                            id_people,
+                                            id_dohod,
+                                            at_date,
+                                            to_date,
+                                            value_money,
+                                            value_money2
+                                          )
+                                  VALUES (
+                                           '$id_people',
+                                           '$id_dohod',
+                                           '$at_date',
+                                           '$to_date',
+                                           '$value_money',
+                                           '$value_money2'
+                                         )";
+                connect_to_my_db();
+                $result= mysql_query($query) or die (mysql_error());
+            }
+/////////////////////////////////////////////////////////////////////////////////////
+////////////////////////////////////////////////////////////////////////////////////
+/////////////////////////////////////////////////////////////////////////////////////
+function data_update_people($id_people, $familia, $imya, $otchestvo, $date, $sex, $vid_doc, $serial, $nomer, $who, $data_vid, $bank_schet,$bank_filial)
+            {
+               $query= "UPDATE people
+                                 SET
+                                    familia= '$familia',
+                                    imya= '$imya',
+                                    otchestvo= '$otchestvo',
+                                    date= '$date',
+                                    sex= '$sex',
+                                    vid_doc= '$vid_doc',
+                                    serial= '$serial',
+                                    nomer= '$nomer',
+                                    who= '$who',
+                                    data_vid= '$data_vid',
+                                    bank_schet= '$bank_schet',
+                                    bank_filial= '$bank_filial'
+                                WHERE
+                                    id_people= '$id_people' ";
+                connect_to_my_db();
+                $result= mysql_query($query) or die (mysql_error());
+            }
+////////////////////////////////////////////////////////////////////////////////////////
+function data_update_house ($id_home, $code_street, $nomer_doma, $nomer_korpusa, $nomer_kvartiri)
+            {
+              $query= "UPDATE house
+                                SET
+                                    code_street= '$code_street',
+                                    nomer_doma= '$nomer_doma',
+                                    nomer_korpusa= '$nomer_korpusa',
+                                    nomer_kvartiri= '$nomer_kvartiri'
+                             WHERE
+                                    id_home= '$id_home'";
+                connect_to_my_db();
+                $result= mysql_query($query) or die (mysql_error());
+            }
+///////////////////////////////////////////////////////////////////////////////////////
+function data_update_house_env($id_home, $vid_sobstv, $bank, $obsh_ploshad, $otapl_ploshad, $kolvo_komnat, $vid_otopl, $vladelec)
+            {
+              $query= "UPDATE house_env
+                                    SET
+                                        vid_sobstv= '$vid_sobstv',
+                                        bank= '$bank',
+                                        obsh_ploshad= '$obsh_ploshad',
+                                        otapl_ploshad= '$otapl_ploshad',
+                                        kolvo_komnat= '$kolvo_komnat',
+                                        vid_otopl= '$vid_otopl',
+                                        vladelec= '$vladelec'
+                                  WHERE
+                                        id_home= '$id_home'";
+                connect_to_my_db();
+                $result= mysql_query($query) or die (mysql_error());
+            }
+/////////////////////////////////////////////////////////////////////////////////////////
+function data_update_zayavki($id_home, $date, $at_date, $to_date, $bank, $sost_vipl)
+            {
+              echo "обновление данных";
+              $query= "UPDATE zayavki
+                                    SET
+                                        date= '$date',
+                                        at_date= '$at_date',
+                                        to_date= '$to_date',
+                                        bank= '$bank',
+                                        sost_vipl= '$sost_vipl'
+                                   WHERE
+                                        id_home= '$id_home' ";
+                connect_to_my_db();
+                $result= mysql_query($query) or die (mysql_error());
+                echo "закончили обноление данных заявки";
+            }
+
+
+
+
+
+
+
+
+
+
+
+?>
